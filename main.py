@@ -20,5 +20,7 @@ if not os.path.isfile("steamcmd.sh"):
 username = tkSimpleDialog.askstring("Username Entry", "Please enter your Steam Username")
 password = tkSimpleDialog.askstring("Password Entry", "Please enter your Steam Password", show="*")
 appid = tkSimpleDialog.askinteger("Enter App Id", "Enter the app id for the app that you wish to download (eg. 282440 for Quake Live)")
-installdir = tkFileDialog.askdirectory()
+dir_opt = {}
+dir_opt['title'] = 'Please select a download location'
+installdir = tkFileDialog.askdirectory(**dir_opt)
 os.system("sudo ./steamcmd.sh +@sSteamCmdForcePlatformType windows " + "+login " + username + " " + password + " +force_install_dir '" + installdir + "' " +  "+app_update " + str(appid) + " -validate"+ " +quit")
