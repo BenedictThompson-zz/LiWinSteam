@@ -1,16 +1,18 @@
+#!/usr/bin/env python3
+# coding: utf-8
 import urllib
 import tkMessageBox
 import tkSimpleDialog
 import tarfile
 import Tkinter
 import time
-import subprocess
+from subprocess import Popen
 import os.path
 import tkFileDialog
 root = Tkinter.Tk()
 root.withdraw()
 
-if os.path.isfile("steamcmd.sh"): 
+if not os.path.isfile("steamcmd.sh"): 
     tkMessageBox.showinfo("First Time Setup", "Downloading and extracting steamcmd. Please wait.")
     urllib.urlretrieve ("https://steamcdn-a.akamaihd.net/client/installer/steamcmd_linux.tar.gz", "steamcmd.tar.gz")
     time.sleep(0.5)
@@ -23,9 +25,8 @@ appid = tkSimpleDialog.askinteger("Enter App Id", "Enter the app id for the app 
 dir_opt = {}
 dir_opt['title'] = 'Please select a download location'
 installdir = tkFileDialog.askdirectory(**dir_opt)
-import shlex
-from subprocess import Popen, PIPE
+authkey = tkSimpleDialog.askstring("Auth Key", "If an Auth Key is required, please enter it below.")
+if not authkey == "":
+	authkey = (" "+authkey)
+Popen("./steamcmd.sh +@sSteamCmdForcePlatformType windows " + "+login " + username + " " + password + authkey + " +force_install_dir '" + installdir + "' " +  "+app_update " + str(appid) + " -validate"+ " +quit", shell=True)
 
-os.startfile(r"steamcmd.exe +@sSteamCmdForcePlatformType windows " + "+login " + username + " " + password + " +force_install_dir '" + installdir + "' " +  "+app_update " + str(appid) + " -validate"+ " +quit")
-
-#replace with ./steamcmd.sh
